@@ -1,3 +1,7 @@
+body {
+  background: linear-gradient(135deg, #0b1329 0%, #030712 100%);
+  color: #f8fafc;
+}
 let listaPresentes = [
     { nome: "Leitor de livro digital", valor: "194,17", img: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=500&q=80" },
     { nome: "Ingresso para festival de música com as amigas", valor: "624,22", img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=500&q=80" },
