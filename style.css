@@ -1,0 +1,61 @@
+@media (max-width: 900px) {
+  header {
+    padding: 12px 16px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  nav a {
+    margin-left: 0;
+    font-size: 0.8rem;
+  }
+
+  .hero {
+    height: auto;
+    min-height: 75vh;
+    padding: 80px 16px 40px;
+  }
+
+  .nome-lindo {
+    font-size: 3.2rem !important;
+  }
+
+  .container h2 {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .nome-lindo {
+    font-size: 2.6rem !important;
+  }
+
+  .sub-titulo-topo {
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+  }
+
+  .frase {
+    font-size: 0.95rem;
+  }
+
+  .grid-presentes {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-conteudo {
+    padding: 20px;
+  }
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus 15 Anos - Alice Ribeiro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- MENU SUPERIOR -->
+    <header>
+        <div class="logo">🌸 15 Anos da Alice</div>
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#presentes">Lista de Presentes</a>
+            <a href="#mural">Mural de Cartões</a>
+            <a href="#varal-fotos">Varal de Fotos</a>
+            <a href="#pix-section">Área PIX</a>
+            <a href="#" onclick="abrirLogin()" class="btn-menu-admin">👑 Área da Alice</a>
+        </nav>
+    </header>
+
+    <!-- SEÇÃO DE CAPA (HERO) -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <span class="sub-titulo-topo">04.12.2026 — O dia dos nossos sonhos</span>
+            <h1 class="nome-lindo">Alice<br><span class="sobrenome">Ribeiro</span></h1>
+            <div class="divisor">🌸 ✦ XV ✦ 🌸</div>
+            <p class="frase">"Um toque de elegância, azul profundo e momentos inesquecíveis. Bem-vindos aos meus 15 anos!"</p>
+        </div>
+    </section>
+
+    <!-- LISTA DE PRESENTES -->
+    <section id="presentes" class="container">
+        <h2>🌸 Lista de Presentes 🛍️</h2>
+        <p class="subtitle">Escolha um presente fictício para simbolizar seu carinho. O valor correspondente ajuda a realizar meus sonhos!</p>
+        
+        <div id="gridPresentes" class="grid-presentes"></div>
+    </section>
+
+    <!-- MURAL DE CARTÕES -->
+    <section id="mural" class="container mural-section">
+        <h2>🌸 Mural de Cartões 💌</h2>
+        <p class="subtitle">Deixe um cartão carinhoso para a aniversariante!</p>
+
+        <div class="form-cartao">
+            <input type="text" id="nomeRemetente" placeholder="Seu nome (ex: TIA CLARA)">
+            <textarea id="textoMensagem" placeholder="Escreva seu cartão ou recado carinhoso aqui..."></textarea>
+            <button class="btn-enviar-cartao" onclick="enviarCartao()">Enviar Cartão 💖</button>
+        </div>
+
+        <div id="listaCartoes" class="grid-cartoes"></div>
+    </section>
+
+    <!-- MURAL DE FOTOS ESTILO VARALZINHO -->
+    <section id="varal-fotos" class="container varal-section">
+        <h2>🌸 Varal de Memórias 📸</h2>
+        <p class="subtitle">Tem uma foto linda com a Alice? Envie aqui para pendurar no nosso varalzinho virtual!</p>
+
+        <div class="form-cartao" style="margin-bottom: 30px;">
+            <input type="text" id="nomeFotografo" placeholder="Seu nome / Quem tirou a foto">
+            <input type="file" id="inputFotoVaral" accept="image/*" style="padding: 10px; background: #0b131d; border: 2px solid #bf953f; border-radius: 10px; color: #fff;">
+            <button class="btn-enviar-cartao" onclick="enviarFotoVaral()">Pendurar no Varal 🌸</button>
+        </div>
+
+        <div class="varal-linha-container">
+            <div class="corda-varal"></div>
+            <div id="gridVaral" class="grid-varal-fotos"></div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO PIX / QR CODE -->
+    <section id="pix-section" class="container pix-container">
+        <h2>🌸 Área de Pagamento / PIX 💸</h2>
+        <p class="subtitle">Utilize o QR Code ou copie a chave abaixo para concluir o seu presente fictício:</p>
+        
+        <div class="pix-box">
+            <img id="imagemQrCodeExibicao" src="seu-qr-code.png" alt="QR Code PIX" class="qr-code">
+            <div class="copia-cola">
+                <input type="text" id="chavePix" value="chave-pix-exemplo-alice@email.com" readonly>
+                <button onclick="copiarChave()" class="btn-copiar">Copiar Chave PIX</button>
+                <span id="msgCopiado" style="display:none; color: #bf953f; font-size: 0.9rem; margin-top: 5px; font-weight: bold;">Chave copiada com sucesso!</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE COMPRA / PIX COM O AVISO DA CONTA VINCULADA -->
+    <div id="modalPresente" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="fecharModal()">&times;</span>
+            <h3 id="tituloModalPresente">Presente</h3>
+            <p id="textoModalPresente" style="margin: 15px 0; color: #cbd5e1; font-size: 0.95rem;"></p>
+            
+            <div style="background: rgba(191, 149, 63, 0.15); border: 1px dashed #bf953f; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem; color: #fbf5b7; text-align: left;">
+                ℹ️ <strong>Informação importante:</strong> Para sua segurança e comodidade, informamos que o valor do PIX será direcionado para a conta bancária do pai da aniversariante (conta 100% vinculada e destinada à realização dos 15 anos da Alice).
+            </div>
+
+            <button class="btn-comprar" onclick="irParaPix()" style="display:block; width:100%; text-decoration:none; padding: 12px 20px; text-align:center; cursor:pointer;">Ir para o PIX 💸</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE LOGIN DA ALICE (ADMIN) -->
+    <div id="modalLogin" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="fecharLogin()">&times;</span>
+            <h3>Painel da Aniversariante 👑</h3>
+            <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 15px;">Digite seus dados de acesso:</p>
+            <input type="text" id="loginUsuario" placeholder="Usuário" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #bf953f; border-radius:8px; background:#0b131d; color:#fff;">
+            <input type="password" id="loginSenha" placeholder="Senha" style="width:100%; padding:10px; margin-bottom:15px; border:2px solid #bf953f; border-radius:8px; background:#0b131d; color:#fff;">
+            <button class="btn-comprar" onclick="fazerLogin()">Entrar</button>
+        </div>
+    </div>
+
+    <!-- PAINEL ADMINISTRATIVO -->
+    <div id="painelAdmin" class="modal">
+        <div class="modal-conteudo" style="max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <span class="fechar" onclick="fecharPainelAdmin()">&times;</span>
+            <h3 style="color: #bf953f; margin-bottom: 15px;">✨ Painel de Controle da Alice</h3>
+            
+            <div style="background: #0b131d; padding: 15px; border-radius: 10px; border: 1px solid #bf953f; margin-bottom: 20px; text-align: left;">
+                <p style="font-size: 0.9rem; color: #bf953f; font-weight: bold; margin-bottom: 10px;">💳 Alterar Dados do PIX:</p>
+                <label style="font-size: 0.8rem; color: #cbd5e1;">Nova Chave PIX (Copia e Cola):</label>
+                <input type="text" id="adminNovaChavePix" placeholder="Digite a nova chave PIX" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #bf953f; border-radius:6px; background:#1b263b; color:#fff; font-size:0.85rem;">
+                
+                <label style="font-size: 0.8rem; color: #cbd5e1;">Nova Imagem do QR Code:</label>
+                <input type="file" id="adminNovoQrCode" accept="image/*" style="width:100%; margin-bottom:10px; color:#fff; font-size:0.85rem;">
+                
+                <button class="btn-comprar" onclick="salvarConfigPix()" style="padding: 8px; font-size: 0.85rem;">Salvar Alterações do PIX</button>
+            </div>
+
+            <hr style="border-color: #415a77; margin-bottom: 20px;">
+
+            <p style="font-size: 0.9rem; margin-bottom: 10px; color:#cbd5e1; font-weight: bold; text-align: left;">🎁 Adicionar novo presente na lista:</p>
+            <input type="text" id="novoNomePresente" placeholder="Nome do presente" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #bf953f; border-radius:8px; background:#0b131d; color:#fff;">
+            <input type="text" id="novoValorPresente" placeholder="Valor (ex: 2000,00)" style="width:100%; padding:10px; margin-bottom:10px; border:2px solid #bf953f; border-radius:8px; background:#0b131d; color:#fff;">
+            <label style="display:block; text-align:left; font-size:0.85rem; color:#bf953f; margin-bottom:5px;">Escolher foto do presente:</label>
+            <input type="file" id="novaFotoPresente" accept="image/*" style="width:100%; margin-bottom:15px; color:#fff;">
+            
+            <button class="btn-comprar" onclick="adicionarNovoPresente()">Cadastrar Presente</button>
+            <button onclick="fazerLogout()" style="background: #415a77; border:none; color:#fff; padding:8px 15px; border-radius:8px; margin-top:15px; cursor:pointer; width:100%;">Sair da Conta</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Aniversário de 15 Anos - Alice Ribeiro ✨ Feito com amor</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
