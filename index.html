@@ -42,19 +42,22 @@
         <div id="gridPresentes" class="grid-presentes"></div>
     </section>
 
-    <!-- MURAL DE CARTÕES -->
-    <section id="mural" class="container mural-section">
-        <h2>🌸 Mural de Cartões 💌</h2>
-        <p class="subtitle">Deixe um cartão carinhoso para a aniversariante!</p>
+  <section id="mural" class="container">
+    <h2>Mural de Cartões 💌</h2>
+    <p class="subtitle">Deixe uma mensagem carinhosa para a aniversariante!</p>
 
-        <div class="form-cartao">
-            <input type="text" id="nomeRemetente" placeholder="Seu nome (ex: TIA CLARA)">
-            <textarea id="textoMensagem" placeholder="Escreva seu cartão ou recado carinhoso aqui..."></textarea>
-            <button class="btn-enviar-cartao" onclick="enviarCartao()">Enviar Cartão 💖</button>
-        </div>
+    <!-- Formulário que você já tem -->
+    <div class="form-cartao">
+        <input type="text" id="nomeRemetente" placeholder="Seu nome (ex: Tília Clara)">
+        <textarea id="textoMensagem" placeholder="Escreva seu cartão ou recado carinhoso..."></textarea>
+        <button class="btn-enviar-cartao" onclick="enviarCartao()">Enviar Cartão 💖</button>
+    </div>
 
-        <div id="listaCartoes" class="grid-cartoes"></div>
-    </section>
+    <!-- ESTE ELEMENTO PRECISA EXISTIR PARA OS CARTÕES APARECEREM: -->
+    <div id="listaCartoes" class="grid-cartoes">
+        <!-- Os cartões aparecem aqui automaticamente -->
+    </div>
+</section>
 
     <!-- MURAL DE FOTOS ESTILO VARALZINHO -->
     <section id="varal-fotos" class="container varal-section">
