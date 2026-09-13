@@ -39,7 +39,7 @@
         <p class="subtitulo-secao">Escolha um presente simbólico para demonstrar seu carinho. O valor será enviado via PIX para a aniversariante!</p>
         
         <div class="grid-presentes" id="gridPresentes">
-            <!-- Os itens serão gerados via JavaScript -->
+            <!-- Os 15 presentes serão gerados via JavaScript -->
         </div>
     </section>
 
@@ -121,27 +121,39 @@
             <div id="painelConteudo" style="display:none;">
                 <div class="admin-bloco">
                     <h3>Configurar Chave PIX e QR Code</h3>
-                    <input type="text" id="adminPixChaveInput" placeholder="Digite sua Chave PIX (E-mail, CPF, Tel ou Aleatória)">
+                    <input type="text" id="adminPixChaveInput" placeholder="Digite sua Chave PIX">
                     <input type="text" id="adminPixQrInput" placeholder="Cole o link/URL da imagem do QR Code">
                     <button onclick="salvarPixAdmin()" class="btn-ouro">Salvar Dados PIX</button>
                 </div>
 
                 <hr class="admin-divisor">
 
+                <!-- NOVO: Gerenciar Lista de Presentes e Valores -->
                 <div class="admin-bloco">
-                    <h3>Gerenciar Mural de Recados</h3>
-                    <div id="adminListaCartoes" class="admin-lista-scroll">
-                        <!-- Lista com botão de excluir para a admin -->
+                    <h3>Adicionar Novo Presente / Mudar Valores</h3>
+                    <input type="text" id="novoNomePresente" placeholder="Nome do Presente (ex: Salão de Beleza)">
+                    <input type="number" id="novoPrecoPresente" placeholder="Valor em R$ (ex: 150)">
+                    <input type="text" id="novaFotoPresente" placeholder="Link da Foto (URL opcional)">
+                    <button onclick="adicionarPresenteAdmin()" class="btn-ouro">Adicionar Presente</button>
+                    
+                    <h3 style="margin-top: 15px;">Presentes Atuais (Gerenciar/Excluir):</h3>
+                    <div id="adminListaPresentes" class="admin-lista-scroll">
+                        <!-- Lista de presentes para controle da Alice -->
                     </div>
                 </div>
 
                 <hr class="admin-divisor">
 
                 <div class="admin-bloco">
+                    <h3>Gerenciar Mural de Recados</h3>
+                    <div id="adminListaCartoes" class="admin-lista-scroll"></div>
+                </div>
+
+                <hr class="admin-divisor">
+
+                <div class="admin-bloco">
                     <h3>Gerenciar Varal de Fotos</h3>
-                    <div id="adminListaFotos" class="admin-lista-scroll">
-                        <!-- Lista de fotos com botão de excluir para a admin -->
-                    </div>
+                    <div id="adminListaFotos" class="admin-lista-scroll"></div>
                 </div>
 
                 <button onclick="fazerLogout()" class="btn-sair">Sair do Painel</button>
