@@ -1,3 +1,40 @@
+// --- SISTEMA DE LOGIN DO ADMINISTRADOR ---
+function abrirPainelAdmin() {
+    let modal = document.getElementById('modalAdmin');
+    if (modal) modal.style.display = 'flex';
+}
+
+function fecharPainelAdmin() {
+    let modal = document.getElementById('modalAdmin');
+    if (modal) modal.style.display = 'none';
+}
+
+function fazerLoginAdmin() {
+    let usuarioInput = document.getElementById('usuarioAdminInput').value.trim();
+    let senhaInput = document.getElementById('senhaAdminInput').value.trim();
+    
+    // Credenciais solicitadas: usuário 'alice' e senha '561564'
+    let usuarioCorreto = "alice";
+    let senhaCorreta = "561564";
+
+    if (usuarioInput === usuarioCorreto && senhaInput === senhaCorreta) {
+        document.getElementById('adminLoginBox').style.display = 'none';
+        document.getElementById('adminPainelConteudo').style.display = 'block';
+        alert("Login efetuado com sucesso!");
+    } else {
+        alert("Usuário ou senha incorretos!");
+    }
+}
+
+function sairAdmin() {
+    document.getElementById('adminLoginBox').style.display = 'block';
+    document.getElementById('adminPainelConteudo').style.display = 'none';
+    document.getElementById('usuarioAdminInput').value = '';
+    document.getElementById('senhaAdminInput').value = '';
+    fecharPainelAdmin();
+}
+
+
 // --- CARREGAR E RENDERIZAR CARTÕES (Sem opção de excluir) ---
 function carregarCartoes() {
     let lista = document.getElementById('listaCartoes');
@@ -19,7 +56,7 @@ function carregarCartoes() {
 // --- FUNÇÃO PARA ENVIAR NOVO CARTÃO ---
 function enviarCartao(event) {
     if (event) event.preventDefault();
-    let nomeInput = document.getElementById('nomeCartao') || document.getElementById('nomeRemetente');
+    let nomeInput = document.getElementById('nomeCartao');
     let msgInput = document.getElementById('mensagemCartao');
 
     if (!nomeInput || !msgInput) return;
@@ -80,7 +117,6 @@ function carregarVaralFotos() {
         { nome: "Família", foto: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=80" }
     ];
 
-    // Duplicamos o array de fotos para criar o efeito de loop infinito suave na animação
     let fotosDuplicadas = [...fotos, ...fotos];
 
     gridVaral.innerHTML = "";
@@ -116,14 +152,17 @@ function carregarPixNaTela() {
     let chaveSalva = localStorage.getItem('alice_pix_chave') || "Chave PIX não configurada";
     let qrcodeSalvo = localStorage.getItem('alice_pix_qrcode') || "";
 
-    // Elementos na área visível para os convidados
     let displayChave = document.getElementById('displayPixChave');
     let displayQr = document.getElementById('displayPixQr');
 
     if (displayChave) displayChave.innerText = chaveSalva;
-    if (displayQr && qrcodeSalvo) {
-        displayQr.src = qrcodeSalvo;
-        displayQr.style.display = "block";
+    if (displayQr) {
+        if (qrcodeSalvo) {
+            displayQr.src = qrcodeSalvo;
+            displayQr.style.display = "block";
+        } else {
+            displayQr.style.display = "none";
+        }
     }
 }
 
@@ -132,17 +171,10 @@ function carregarPixNaTela() {
 function ampliarFoto(urlFoto) {
     let modalZoom = document.getElementById('modalZoomFoto');
     let imgZoom = document.getElementById('imgZoomExibicao');
-    if (!modalZoom) {
-        let divModal = document.createElement('div');
-        divModal.id = 'modalZoomFoto';
-        divModal.onclick = fecharZoom;
-        divModal.innerHTML = `<span class="fechar" style="position:absolute; top:20px; right:30px; font-size:2.5rem; color:#fff; cursor:pointer;">&times;</span><img id="imgZoomExibicao" src="${urlFoto}" style="max-width:90%; max-height:90%; border-radius:8px;">`;
-        divModal.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; z-index:9999;";
-        document.body.appendChild(divModal);
-    } else {
-        if (imgZoom) imgZoom.src = urlFoto;
-        modalZoom.style.display = 'flex';
-    }
+    if (!modalZoom) return;
+    
+    if (imgZoom) imgZoom.src = urlFoto;
+    modalZoom.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:9999;";
 }
 
 function fecharZoom() {
