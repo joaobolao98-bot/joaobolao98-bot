@@ -311,7 +311,7 @@ function fazerLogin() {
     let usuario = document.getElementById('inputUsuario').value.trim();
     let senha = document.getElementById('inputSenha').value.trim();
 
-    if (usuario === "alice" && senha === "561564") {
+    if (usuario === "alice" && senha === "2026") {
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('painelConteudo').style.display = 'block';
         alert("Bem-vinda ao seu painel, Alice! 👑");
