@@ -3,85 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>15 Anos da Alice</title>
+    <title>15 Anos da Alice Ribeiro</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts para elegância -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="main-header">
-        <h1>15 Anos da Alice</h1>
-        <p>Bem-vindo ao site oficial da festa!</p>
-        <!-- Botão para abrir o Administrador -->
-        <button id="btnAbrirAdmin" class="btn-admin-trigger" onclick="abrirPainelAdmin()">Painel do Administrador</button>
+    <!-- CABEÇALHO / MENU -->
+    <header class="header-principal">
+        <div class="logo">15 Anos <span>da Alice</span></div>
+        <nav class="nav-menu">
+            <a href="#inicio">Início</a>
+            <a href="#presentes">Lista de Presentes</a>
+            <a href="#mural">Mural de Recados</a>
+            <a href="#varal">Varal de Fotos</a>
+            <a href="#pix">Área PIX</a>
+            <a href="#admin" class="btn-menu-admin" onclick="abrirModalAdmin(event)">👑 Área da Alice</a>
+        </nav>
     </header>
 
-    <main class="container">
-        <!-- SEÇÃO DE CARTÕES -->
-        <section class="section-cartoes">
-            <h2>Mural de Recados</h2>
-            <form id="formCartao" onsubmit="enviarCartao(event)">
-                <input type="text" id="nomeCartao" placeholder="Seu Nome / Dinda / Família" required>
-                <textarea id="mensagemCartao" placeholder="Deixe sua mensagem para a Alice..." required></textarea>
-                <button type="submit" class="btn-acao">Enviar Recado</button>
-            </form>
-            <div id="listaCartoes" class="grid-cartoes"></div>
-        </section>
+    <!-- SEÇÃO INÍCIO -->
+    <section id="inicio" class="hero-section">
+        <div class="hero-content">
+            <span class="sub-data">04.12.2026 — O Dia dos Nossos Sonhos</span>
+            <h1 class="titulo-principal">Alice Ribeiro</h1>
+            <div class="divisor-flores">🌸 ✦ XV ✦ 🌸</div>
+            <p class="hero-frase">"Um toque de elegância, azul profundo e momentos inesquecíveis. Bem-vindos aos meus 15 anos!"</p>
+        </div>
+    </section>
 
-        <!-- SEÇÃO DO VARAL DE FOTOS -->
-        <section class="section-varal">
-            <h2>Varal de Memórias (Fotos)</h2>
-            <div class="form-varal">
-                <input type="text" id="nomeFotografo" placeholder="Seu Nome / Legenda da Foto">
-                <input type="file" id="inputFotoVaral" accept="image/*">
-                <button type="button" class="btn-acao" onclick="enviarFotoVaral()">Enviar Foto</button>
+    <!-- SEÇÃO LISTA DE PRESENTES -->
+    <section id="presentes" class="container-secao">
+        <h2>Lista de Presentes</h2>
+        <p class="subtitulo-secao">Escolha um presente simbólico para demonstrar seu carinho. O valor será enviado via PIX para a aniversariante!</p>
+        
+        <div class="grid-presentes" id="gridPresentes">
+            <!-- Os itens serão gerados via JavaScript -->
+        </div>
+    </section>
+
+    <!-- SEÇÃO MURAL DE RECADOS -->
+    <section id="mural" class="container-secao fundo-alternativo">
+        <h2>Mural de Recados</h2>
+        <p class="subtitulo-secao">Deixe uma mensagem especial para a Alice guardar para sempre no coração.</p>
+        
+        <form id="formCartao" class="form-estilizado" onsubmit="enviarCartao(event)">
+            <input type="text" id="nomeCartao" placeholder="Seu Nome / Família" required>
+            <textarea id="mensagemCartao" placeholder="Escreva sua mensagem mágica aqui..." rows="4" required></textarea>
+            <button type="submit" class="btn-ouro">Enviar Recado 💌</button>
+        </form>
+
+        <div id="listaCartoes" class="grid-cartoes">
+            <!-- Cartões carregados dinamicamente -->
+        </div>
+    </section>
+
+    <!-- SEÇÃO VARAL DE FOTOS -->
+    <section id="varal" class="container-secao">
+        <h2>Varal de Memórias</h2>
+        <p class="subtitulo-secao">Compartilhe uma foto com a Alice! Ela aparecerá no nosso varal animado.</p>
+        
+        <div class="form-estilizado">
+            <input type="text" id="nomeFotografo" placeholder="Seu Nome / Legenda da Foto">
+            <input type="file" id="inputFotoVaral" accept="image/*">
+            <button type="button" class="btn-ouro" onclick="enviarFotoVaral()">Pendurar no Varal 📸</button>
+        </div>
+
+        <!-- Container do Varal Animado -->
+        <div class="varal-container-externo">
+            <div class="linha-varal"></div>
+            <div id="gridVaral" class="grid-varal-animado">
+                <!-- Fotos em movimento automático -->
             </div>
-            <div id="gridVaral" class="grid-polaroid"></div>
-        </section>
+        </div>
+    </section>
 
-        <!-- SEÇÃO DE PIX (Presente) -->
-        <section class="section-pix">
-            <h2>Lista de Presentes (PIX)</h2>
-            <p>Dê um presente de aniversário via PIX para a Alice:</p>
-            <div class="pix-display-box">
-                <p><strong>Chave PIX:</strong> <span id="displayPixChave">Carregando...</span></p>
-                <img id="displayPixQr" src="" alt="QR Code PIX" style="display:none; max-width:200px; margin: 10px auto;">
+    <!-- SEÇÃO ÁREA PIX (PÚBLICA) -->
+    <section id="pix" class="container-secao fundo-alternativo">
+        <h2>Contribuição via PIX</h2>
+        <p class="subtitulo-secao">Quer enviar um presente em dinheiro? Utilize os dados abaixo:</p>
+        
+        <div class="pix-card-publico">
+            <p><strong>Chave PIX:</strong></p>
+            <div class="copia-cola-box">
+                <span id="displayPixChave">Nenhuma chave cadastrada ainda pela Alice.</span>
+                <button onclick="copiarChavePix()" class="btn-copiar">Copiar Chave</button>
             </div>
-        </section>
-    </main>
-
-    <!-- PAINEL DO ADMINISTRADOR (MODAL / ESCONDIDO) -->
-    <div id="modalAdmin" class="modal-admin" style="display:none;">
-        <div class="modal-content">
-            <span class="fechar" onclick="fecharPainelAdmin()">&times;</span>
-            <h2>Área do Administrador</h2>
             
-            <!-- Tela de Login do Admin -->
-            <div id="adminLoginBox">
-                <p>Entre com o usuário e senha:</p>
-                <input type="text" id="usuarioAdminInput" placeholder="Usuário (alice)">
-                <input type="password" id="senhaAdminInput" placeholder="Senha (561564)">
-                <button type="button" class="btn-acao" onclick="fazerLoginAdmin()">Entrar</button>
+            <div class="qr-code-box" id="containerQrCodePublico" style="display:none;">
+                <p><strong>QR Code PIX:</strong></p>
+                <img id="displayPixQr" src="" alt="QR Code PIX">
+            </div>
+        </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p>Feito com 💖 para os 15 Anos da Alice Ribeiro — 2026</p>
+    </footer>
+
+    <!-- MODAL DA ADMINISTRADORA (ÁREA DA ALICE) -->
+    <div id="modalAdmin" class="modal-overlay" style="display:none;">
+        <div class="modal-caixa">
+            <span class="fechar-modal" onclick="fecharModalAdmin()">&times;</span>
+            <h2>👑 Painel da Alice</h2>
+
+            <!-- Tela de Login -->
+            <div id="loginBox">
+                <p>Digite suas credenciais de aniversariante:</p>
+                <input type="text" id="inputUsuario" placeholder="Usuário (alice)">
+                <input type="password" id="inputSenha" placeholder="Senha (561564)">
+                <button onclick="fazerLogin()" class="btn-ouro">Entrar no Painel</button>
             </div>
 
-            <!-- Conteúdo protegido do Admin -->
-            <div id="adminPainelConteudo" style="display:none;">
-                <h3>Configurar PIX e QR Code</h3>
-                <div class="form-admin-pix">
-                    <input type="text" id="adminPixKey" placeholder="Nova Chave PIX">
-                    <input type="text" id="adminPixQr" placeholder="Link/URL da imagem do QR Code">
-                    <button type="button" class="btn-acao" onclick="salvarPixAdmin()">Salvar PIX</button>
+            <!-- Painel Administrativo Completo -->
+            <div id="painelConteudo" style="display:none;">
+                <div class="admin-bloco">
+                    <h3>Configurar Chave PIX e QR Code</h3>
+                    <input type="text" id="adminPixChaveInput" placeholder="Digite sua Chave PIX (E-mail, CPF, Tel ou Aleatória)">
+                    <input type="text" id="adminPixQrInput" placeholder="Cole o link/URL da imagem do QR Code">
+                    <button onclick="salvarPixAdmin()" class="btn-ouro">Salvar Dados PIX</button>
                 </div>
-                <hr style="margin: 20px 0;">
-                <p style="color: #666; font-size: 0.9rem;">* Por segurança, a exclusão de cartões e fotos foi desativada para manter as memórias da Alice salvas com segurança.</p>
-                <button type="button" class="btn-sair" onclick="sairAdmin()">Sair do Painel</button>
+
+                <hr class="admin-divisor">
+
+                <div class="admin-bloco">
+                    <h3>Gerenciar Mural de Recados</h3>
+                    <div id="adminListaCartoes" class="admin-lista-scroll">
+                        <!-- Lista com botão de excluir para a admin -->
+                    </div>
+                </div>
+
+                <hr class="admin-divisor">
+
+                <div class="admin-bloco">
+                    <h3>Gerenciar Varal de Fotos</h3>
+                    <div id="adminListaFotos" class="admin-lista-scroll">
+                        <!-- Lista de fotos com botão de excluir para a admin -->
+                    </div>
+                </div>
+
+                <button onclick="fazerLogout()" class="btn-sair">Sair do Painel</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal para Zoom de Fotos -->
-    <div id="modalZoomFoto" onclick="fecharZoom()" style="display:none;">
-        <span class="fechar" style="position:absolute; top:20px; right:30px; font-size:2.5rem; color:#fff; cursor:pointer;">&times;</span>
-        <img id="imgZoomExibicao" src="">
+    <!-- MODAL DE ZOOM PARA AS FOTOS DO VARAL -->
+    <div id="modalZoom" class="modal-zoom" onclick="fecharZoom()">
+        <span class="fechar-zoom">&times;</span>
+        <img id="imgZoomAmpliada" src="" alt="Foto Ampliada">
     </div>
 
     <script src="script.js"></script>
