@@ -32,7 +32,6 @@ function carregarPresentes() {
     
     let presentes = JSON.parse(localStorage.getItem('presentesAlice')) || presentesPadrao;
 
-    // Site Público
     grid.innerHTML = "";
     presentes.forEach(p => {
         grid.innerHTML += `
@@ -47,7 +46,6 @@ function carregarPresentes() {
         `;
     });
 
-    // Painel Admin (Para excluir ou ver)
     if (adminGridPres) {
         adminGridPres.innerHTML = "";
         presentes.forEach((p, index) => {
@@ -242,16 +240,28 @@ function fecharZoom() {
     if (modal) modal.style.display = 'none';
 }
 
-// --- GESTÃO DO PIX ---
+// --- GESTÃO DO PIX COM UPLOAD DE QR CODE ---
 function salvarPixAdmin() {
     let chave = document.getElementById('adminPixChaveInput').value.trim();
-    let qrcode = document.getElementById('adminPixQrInput').value.trim();
+    let inputFile = document.getElementById('adminPixQrFile');
 
-    if (chave) localStorage.setItem('alice_pix_chave', chave);
-    if (qrcode) localStorage.setItem('alice_pix_qrcode', qrcode);
+    if (chave) {
+        localStorage.setItem('alice_pix_chave', chave);
+    }
 
-    alert("Dados do PIX atualizados com sucesso! 💳");
-    carregarPixPublico();
+    if (inputFile.files && inputFile.files[0]) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let qrCodeUrl = e.target.result;
+            localStorage.setItem('alice_pix_qrcode', qrCodeUrl);
+            carregarPixPublico();
+            alert("Chave PIX e QR Code salvos com sucesso! 💳✨");
+        };
+        reader.readAsDataURL(inputFile.files[0]);
+    } else {
+        carregarPixPublico();
+        alert("Chave PIX salva com sucesso! 💳");
+    }
 }
 
 function carregarPixPublico() {
