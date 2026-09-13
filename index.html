@@ -122,13 +122,14 @@
                 <div class="admin-bloco">
                     <h3>Configurar Chave PIX e QR Code</h3>
                     <input type="text" id="adminPixChaveInput" placeholder="Digite sua Chave PIX">
-                    <input type="text" id="adminPixQrInput" placeholder="Cole o link/URL da imagem do QR Code">
+                    <label style="font-size: 0.85rem; color: #a5b1c2; display: block; margin-bottom: 5px;">Selecione a imagem do QR Code:</label>
+                    <input type="file" id="adminPixQrFile" accept="image/*" style="margin-bottom: 12px;">
                     <button onclick="salvarPixAdmin()" class="btn-ouro">Salvar Dados PIX</button>
                 </div>
 
                 <hr class="admin-divisor">
 
-                <!-- NOVO: Gerenciar Lista de Presentes e Valores -->
+                <!-- Gerenciar Lista de Presentes e Valores -->
                 <div class="admin-bloco">
                     <h3>Adicionar Novo Presente / Mudar Valores</h3>
                     <input type="text" id="novoNomePresente" placeholder="Nome do Presente (ex: Salão de Beleza)">
