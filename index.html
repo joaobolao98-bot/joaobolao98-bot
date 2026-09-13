@@ -113,8 +113,8 @@
             <!-- Tela de Login -->
             <div id="loginBox">
                 <p>Digite suas credenciais de aniversariante:</p>
-                <input type="text" id="inputUsuario" placeholder="Usuário (alice)">
-                <input type="password" id="inputSenha" placeholder="Senha (561564)">
+                <input type="text" id="inputUsuario" placeholder="Usuário (alc)">
+                <input type="password" id="inputSenha" placeholder="Senha (2026)">
                 <button onclick="fazerLogin()" class="btn-ouro">Entrar no Painel</button>
             </div>
 
@@ -130,12 +130,13 @@
 
                 <hr class="admin-divisor">
 
-                <!-- Gerenciar Lista de Presentes e Valores -->
+                <!-- Gerenciar Lista de Presentes e Valores com Upload de Imagem -->
                 <div class="admin-bloco">
                     <h3>Adicionar Novo Presente / Mudar Valores</h3>
                     <input type="text" id="novoNomePresente" placeholder="Nome do Presente (ex: Salão de Beleza)">
                     <input type="number" id="novoPrecoPresente" placeholder="Valor em R$ (ex: 150)">
-                    <input type="text" id="novaFotoPresente" placeholder="Link da Foto (URL)">
+                    <label style="font-size: 0.85rem; color: #a5b1c2; display: block; margin-bottom: 5px;">Selecione a foto do presente:</label>
+                    <input type="file" id="novoFotoPresenteFile" accept="image/*" style="margin-bottom: 12px;">
                     <button onclick="adicionarPresenteAdmin()" class="btn-ouro">Adicionar Presente</button>
                     
                     <h3 style="margin-top: 15px;">Presentes Atuais (Gerenciar/Excluir):</h3>
