@@ -442,6 +442,11 @@ body {
     margin-bottom: 12px;
 }
 
+/* Oculta os caracteres do campo de senha com bolinhas */
+.modal-caixa input[type="password"] {
+    -webkit-text-security: disc;
+}
+
 .admin-bloco {
     margin-top: 20px;
     text-align: left;
