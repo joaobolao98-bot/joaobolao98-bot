@@ -266,7 +266,8 @@ function fazerLogin() {
     const user = document.getElementById('inputUsuario').value;
     const pass = document.getElementById('inputSenha').value;
 
-    if (user === 'alice' && pass === '15anos') { // Defina a senha desejada aqui
+    // Login configurado para Usuário: Alice | Senha: 2026
+    if (user === 'Alice' && pass === '2026') { 
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('painelConteudo').style.display = 'block';
     } else {
