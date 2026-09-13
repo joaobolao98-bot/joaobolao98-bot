@@ -51,7 +51,7 @@ function carregarPresentes() {
         presentes.forEach((p, index) => {
             adminGridPres.innerHTML += `
                 <div class="admin-item-linha">
-                    <span><strong>${p.nome}</strong> - R$ ${Number(p.preco).toFixed(2)}</span>
+                    <span><img src="${p.img}" style="width:30px; height:30px; object-fit:cover; vertical-align:middle; border-radius:4px; margin-right:8px;"> <strong>${p.nome}</strong> - R$ ${Number(p.preco).toFixed(2)}</span>
                     <button class="btn-excluir-admin" onclick="excluirPresente(${index})">Excluir</button>
                 </div>
             `;
@@ -62,22 +62,35 @@ function carregarPresentes() {
 function adicionarPresenteAdmin() {
     let nome = document.getElementById('novoNomePresente').value.trim();
     let preco = parseFloat(document.getElementById('novoPrecoPresente').value);
-    let foto = document.getElementById('novaFotoPresente').value.trim();
+    let inputFile = document.getElementById('novoFotoPresenteFile');
 
     if (!nome || isNaN(preco)) {
         alert("Por favor, preencha o nome e um valor válido.");
         return;
     }
 
-    let imagemPadrao = foto || "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=500&q=80";
+    let imagemPadrao = "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=500&q=80";
 
+    if (inputFile.files && inputFile.files[0]) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let imagemBase64 = e.target.result;
+            salvarNovoPresenteNaLista(nome, preco, imagemBase64);
+        };
+        reader.readAsDataURL(inputFile.files[0]);
+    } else {
+        salvarNovoPresenteNaLista(nome, preco, imagemPadrao);
+    }
+}
+
+function salvarNovoPresenteNaLista(nome, preco, imgUrl) {
     let presentes = JSON.parse(localStorage.getItem('presentesAlice')) || presentesPadrao;
-    presentes.push({ id: Date.now(), nome, preco, img: imagemPadrao });
+    presentes.push({ id: Date.now(), nome, preco, img: imgUrl });
     localStorage.setItem('presentesAlice', JSON.stringify(presentes));
 
     document.getElementById('novoNomePresente').value = "";
     document.getElementById('novoPrecoPresente').value = "";
-    document.getElementById('novaFotoPresente').value = "";
+    document.getElementById('novoFotoPresenteFile').value = "";
 
     carregarPresentes();
     alert("Presente adicionado com sucesso! ✨");
@@ -311,7 +324,7 @@ function fazerLogin() {
     let usuario = document.getElementById('inputUsuario').value.trim();
     let senha = document.getElementById('inputSenha').value.trim();
 
-    if (usuario === "alice" && senha === "2026") {
+    if (usuario === "alc" && senha === "2026") {
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('painelConteudo').style.display = 'block';
         alert("Bem-vinda ao seu painel, Alice! 👑");
