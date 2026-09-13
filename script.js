@@ -57,19 +57,23 @@ async function adicionarPresenteAdmin() {
     if (!nome || !preco) return alert('Preencha nome e valor!');
 
     let imgUrl = '';
-    if (fileInput.files.length > 0) {
-        imgUrl = await converterParaBase64(fileInput.files[0]);
-    }
+    try {
+        if (fileInput.files.length > 0) {
+            imgUrl = await fazerUploadStorage(fileInput.files[0], 'presentes');
+        }
 
-    const { error } = await _supabase.from('presentes').insert([{ nome, preco: parseFloat(preco), img: imgUrl }]);
+        const { error } = await _supabase.from('presentes').insert([{ nome, preco: parseFloat(preco), img: imgUrl }]);
 
-    if (error) alert('Erro ao salvar presente!');
-    else {
+        if (error) throw error;
+
         alert('Presente adicionado!');
         document.getElementById('novoNomePresente').value = '';
         document.getElementById('novoPrecoPresente').value = '';
         document.getElementById('novoFotoPresenteFile').value = '';
         carregarPresentes();
+    } catch (err) {
+        console.error(err);
+        alert('Erro ao salvar presente!');
     }
 }
 
@@ -178,17 +182,21 @@ async function enviarFotoVaral() {
 
     if (!inputFoto.files.length) return alert('Selecione uma foto primeiro!');
 
-    const fotoBase64 = await converterParaBase64(inputFoto.files[0]);
+    try {
+        // Envia direto para o Supabase Storage (Bucket 'fotos')
+        const fotoUrl = await fazerUploadStorage(inputFoto.files[0], 'varal');
 
-    const { error } = await _supabase.from('varal_fotos').insert([{ nome, foto: fotoBase64 }]);
+        const { error } = await _supabase.from('varal_fotos').insert([{ nome, foto: fotoUrl }]);
 
-    if (error) {
-        alert('Erro ao enviar foto!');
-    } else {
+        if (error) throw error;
+
         alert('Foto pendurada no varal! 📸');
         document.getElementById('nomeFotografo').value = '';
         inputFoto.value = '';
         carregarVaral();
+    } catch (err) {
+        console.error(err);
+        alert('Erro ao enviar foto! Verifique se o bucket "fotos" está configurado corretamente.');
     }
 }
 
@@ -224,21 +232,24 @@ async function salvarPixAdmin() {
     const chave = document.getElementById('adminPixChaveInput').value;
     const fileInput = document.getElementById('adminPixQrFile');
 
-    let qrCodeBase64 = '';
-    if (fileInput.files.length > 0) {
-        qrCodeBase64 = await converterParaBase64(fileInput.files[0]);
-    }
+    let qrCodeUrl = '';
+    try {
+        if (fileInput.files.length > 0) {
+            qrCodeUrl = await fazerUploadStorage(fileInput.files[0], 'pix');
+        }
 
-    // Limpa a config antiga para manter apenas 1
-    await _supabase.from('config_pix').delete().neq('id', 0);
+        // Limpa a config antiga para manter apenas 1
+        await _supabase.from('config_pix').delete().neq('id', 0);
 
-    const { error } = await _supabase.from('config_pix').insert([{ chave, qr_code: qrCodeBase64 }]);
+        const { error } = await _supabase.from('config_pix').insert([{ chave, qr_code: qrCodeUrl }]);
 
-    if (error) {
-        alert('Erro ao salvar dados do PIX!');
-    } else {
+        if (error) throw error;
+
         alert('Dados do PIX salvos com sucesso!');
         carregarPix();
+    } catch (err) {
+        console.error(err);
+        alert('Erro ao salvar dados do PIX!');
     }
 }
 
@@ -291,15 +302,26 @@ function fecharZoom() {
 }
 
 // ================================================
-// FUNÇÕES AUXILIARES
+// FUNÇÕES AUXILIARES (STORAGE & UTILS)
 // ================================================
-function converterParaBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
+async function fazerUploadStorage(file, pasta) {
+    const nomeUnico = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+    const caminho = `${pasta}/${nomeUnico}`;
+
+    const { data, error } = await _supabase.storage
+        .from('fotos') // Certifique-se de que o bucket no Supabase se chama 'fotos'
+        .upload(caminho, file);
+
+    if (error) {
+        console.error('Erro no upload para o storage:', error);
+        throw error;
+    }
+
+    const { data: publicData } = _supabase.storage
+        .from('fotos')
+        .getPublicUrl(caminho);
+
+    return publicData.publicUrl;
 }
 
 function escapeHtml(texto) {
