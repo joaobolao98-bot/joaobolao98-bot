@@ -589,7 +589,26 @@
             <div id="gridVaral" class="grid-varal-fotos"></div>
         </div>
     </section>
+<!-- Exemplo da Seção do Administrador no index.html -->
+<div id="admin-panel" class="admin-panel-hidden" style="display: none;">
+    <h3>Painel do Administrador</h3>
+    
+    <!-- Configuração do PIX (Novo/Atualizado) -->
+    <div class="admin-pix-config">
+        <h4>Configurar PIX e QR Code</h4>
+        <input type="text" id="admin-pix-key" placeholder="Digite a Chave PIX">
+        <input type="text" id="admin-pix-qrcode" placeholder="Link ou URL da imagem do QR Code PIX">
+        <button id="salvar-pix-btn" class="btn-acao">Salvar PIX</button>
+    </div>
 
+    <!-- Lista de Moderação (Apenas visualização, sem botões de apagar cartões/fotos) -->
+    <div class="admin-content-list">
+        <h4>Cartões e Mensagens Recebidos (Apenas Leitura)</h4>
+        <div id="admin-cards-container">
+            <!-- Os cartões aparecem aqui apenas para visualização -->
+        </div>
+    </div>
+</div>
     <!-- ÁREA PIX -->
     <section id="pix-section" class="container pix-container">
         <h2>Área de Pagamento / PIX 💵</h2>
