@@ -183,7 +183,7 @@ async function enviarFotoVaral() {
     if (!inputFoto.files.length) return alert('Selecione uma foto primeiro!');
 
     try {
-        // Envia direto para o Supabase Storage (Bucket 'VARAL DE FOTOS')
+        // Envia direto para o Supabase Storage (Bucket 'varal')
         const fotoUrl = await fazerUploadStorage(inputFoto.files[0], 'VARAL DE FOTOS');
 
         const { error } = await _supabase.from('varal_fotos').insert([{ nome, foto: fotoUrl }]);
