@@ -1,4 +1,18 @@
-// --- 15 PRESENTES INICIAIS DA LISTA ---
+// ==========================================
+// 1. CONEXÃO COM O SUPABASE
+// ==========================================
+const SUPABASE_URL = 'https://xiiieseiawrihuiboxgw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_QYOUrSOzXSFwYaPYVcnoJA_x7-AdzvA';
+
+// Inicializa a conexão com o banco de dados
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+console.log("Conectado ao Supabase com sucesso!");
+
+
+// ==========================================
+// 2. PRESENTES INICIAIS DA LISTA
+// ==========================================
 const presentesPadrao = [
     { id: 1, nome: "Cota Lua de Mel", preco: 150.00, img: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=80" },
     { id: 2, nome: "Vestido da Festa", preco: 300.00, img: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=500&q=80" },
