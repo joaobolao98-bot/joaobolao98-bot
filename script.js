@@ -186,7 +186,7 @@ async function enviarFotoVaral() {
         // Envia direto para o Supabase Storage (Bucket 'VARAL DE FOTOS')
         const fotoUrl = await fazerUploadStorage(inputFoto.files[0], 'VARAL DE FOTOS');
 
-        const { error } = await _supabase.from('varal_fotos').insert([{ nome, foto: fotoUrl }]);
+        const { error } = await _supabase.from('VARAL DE FOTOS').insert([{ nome, foto: fotoUrl }]);
 
         if (error) throw error;
 
