@@ -1,9 +1,20 @@
-// --- DADOS DA LISTA DE PRESENTES PADRÃO ---
-const presentesIniciais = [
+// --- 15 PRESENTES INICIAIS DA LISTA ---
+const presentesPadrao = [
     { id: 1, nome: "Cota Lua de Mel", preco: 150.00, img: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=80" },
-    { id: 2, nome: "Vestido da Festa", preco: 250.00, img: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=500&q=80" },
+    { id: 2, nome: "Vestido da Festa", preco: 300.00, img: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=500&q=80" },
     { id: 3, nome: "Ingresso Parque de Diversões", preco: 120.00, img: "https://images.unsplash.com/photo-1513883637004-3ac22981fddc?auto=format&fit=crop&w=500&q=80" },
-    { id: 4, nome: "Patrocínio para o DJ", preco: 100.00, img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=500&q=80" }
+    { id: 4, nome: "Patrocínio para o DJ", preco: 200.00, img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=500&q=80" },
+    { id: 5, nome: "Make e Penteado", preco: 180.00, img: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=500&q=80" },
+    { id: 6, nome: "Sapato de Princesa", preco: 160.00, img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=500&q=80" },
+    { id: 7, nome: "Sessão de Fotos Externas", preco: 250.00, img: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=500&q=80" },
+    { id: 8, nome: "Coquetel sem Álcool", preco: 90.00, img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=500&q=80" },
+    { id: 9, nome: "Bolo de Aniversário", preco: 220.00, img: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=500&q=80" },
+    { id: 10, nome: "Lembrancinhas dos Convidados", preco: 110.00, img: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=500&q=80" },
+    { id: 11, nome: "Acessórios e Tiara", preco: 80.00, img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=500&q=80" },
+    { id: 12, nome: "Kit Skincare Pré-Festa", preco: 70.00, img: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=500&q=80" },
+    { id: 13, nome: "Chuva de Prata (Brinde)", preco: 130.00, img: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=500&q=80" },
+    { id: 14, nome: "Vale Sorvete com as Amigas", preco: 60.00, img: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=500&q=80" },
+    { id: 15, nome: "Abraço Apertado & Presença", preco: 50.00, img: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=500&q=80" }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,26 +27,76 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- RENDERIZAR LISTA DE PRESENTES ---
 function carregarPresentes() {
     let grid = document.getElementById('gridPresentes');
+    let adminGridPres = document.getElementById('adminListaPresentes');
     if (!grid) return;
     
+    let presentes = JSON.parse(localStorage.getItem('presentesAlice')) || presentesPadrao;
+
+    // Site Público
     grid.innerHTML = "";
-    presentesIniciais.forEach(p => {
+    presentes.forEach(p => {
         grid.innerHTML += `
             <div class="card-presente">
                 <img src="${p.img}" alt="${p.nome}">
                 <div class="card-info">
                     <h3>${p.nome}</h3>
-                    <p class="preco-presente">R$ ${p.preco.toFixed(2).replace('.', ',')}</p>
+                    <p class="preco-presente">R$ ${Number(p.preco).toFixed(2).replace('.', ',')}</p>
                     <button onclick="comprarPresente('${p.nome}', ${p.preco})" class="btn-ouro" style="width:100%;">Contribuir PIX</button>
                 </div>
             </div>
         `;
     });
+
+    // Painel Admin (Para excluir ou ver)
+    if (adminGridPres) {
+        adminGridPres.innerHTML = "";
+        presentes.forEach((p, index) => {
+            adminGridPres.innerHTML += `
+                <div class="admin-item-linha">
+                    <span><strong>${p.nome}</strong> - R$ ${Number(p.preco).toFixed(2)}</span>
+                    <button class="btn-excluir-admin" onclick="excluirPresente(${index})">Excluir</button>
+                </div>
+            `;
+        });
+    }
+}
+
+function adicionarPresenteAdmin() {
+    let nome = document.getElementById('novoNomePresente').value.trim();
+    let preco = parseFloat(document.getElementById('novoPrecoPresente').value);
+    let foto = document.getElementById('novaFotoPresente').value.trim();
+
+    if (!nome || isNaN(preco)) {
+        alert("Por favor, preencha o nome e um valor válido.");
+        return;
+    }
+
+    let imagemPadrao = foto || "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=500&q=80";
+
+    let presentes = JSON.parse(localStorage.getItem('presentesAlice')) || presentesPadrao;
+    presentes.push({ id: Date.now(), nome, preco, img: imagemPadrao });
+    localStorage.setItem('presentesAlice', JSON.stringify(presentes));
+
+    document.getElementById('novoNomePresente').value = "";
+    document.getElementById('novoPrecoPresente').value = "";
+    document.getElementById('novaFotoPresente').value = "";
+
+    carregarPresentes();
+    alert("Presente adicionado com sucesso! ✨");
+}
+
+function excluirPresente(index) {
+    if (confirm("Deseja remover este item da lista de presentes?")) {
+        let presentes = JSON.parse(localStorage.getItem('presentesAlice')) || presentesPadrao;
+        presentes.splice(index, 1);
+        localStorage.setItem('presentesAlice', JSON.stringify(presentes));
+        carregarPresentes();
+    }
 }
 
 function comprarPresente(nome, preco) {
     let chavePix = localStorage.getItem('alice_pix_chave') || "Chave PIX não configurada";
-    alert(`Obrigado pelo carinho! Para presentear com "${nome}" (R$ ${preco.toFixed(2)}), faça um PIX para a chave:\n\n${chavePix}\n\nAbra o aplicativo do seu banco, cole a chave e confirme o presente para a Alice! 💖`);
+    alert(`Obrigado pelo carinho! Para presentear com "${nome}" (R$ ${Number(preco).toFixed(2)}), faça um PIX para a chave:\n\n${chavePix}\n\nAbra o aplicativo do seu banco, cole a chave e confirme o presente para a Alice! 💖`);
     window.location.href = "#pix";
 }
 
@@ -65,7 +126,6 @@ function carregarCartoes() {
         { id: 1, nome: "Dinda", mensagem: "Alice, que sua festa de 15 anos seja mágica e inesquecível! 💖✨" }
     ];
 
-    // Renderiza no site público
     lista.innerHTML = "";
     cartoes.forEach((c) => {
         lista.innerHTML += `
@@ -76,7 +136,6 @@ function carregarCartoes() {
         `;
     });
 
-    // Renderiza no painel da admin (com opção de exclusão)
     if (adminLista) {
         adminLista.innerHTML = "";
         cartoes.forEach((c, index) => {
@@ -99,7 +158,7 @@ function excluirCartao(index) {
     }
 }
 
-// --- VARAL DE FOTOS COM ANIMAÇÃO E ZOOM ---
+// --- VARAL DE FOTOS ---
 function enviarFotoVaral() {
     let nome = document.getElementById('nomeFotografo').value.trim();
     let inputFoto = document.getElementById('inputFotoVaral');
@@ -134,12 +193,11 @@ function carregarVaralFotos() {
         { id: 2, nome: "Família", foto: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=80" }
     ];
 
-    // Duplicamos o array para criar o efeito de rotação infinita suave
     let fotosDuplicadas = [...fotos, ...fotos];
 
     gridVaral.innerHTML = "";
     fotosDuplicadas.forEach((f, i) => {
-        let randomRot = (i % 5) * 0.2; // Rotação aleatória leve para efeito polaroid
+        let randomRot = (i % 5) * 0.2;
         gridVaral.innerHTML += `
             <div class="polaroid-item" style="--r: ${randomRot};">
                 <img src="${f.foto}" alt="${f.nome}" class="polaroid-img" onclick="ampliarFoto('${f.foto}')">
@@ -148,7 +206,6 @@ function carregarVaralFotos() {
         `;
     });
 
-    // Renderiza no painel da admin com opção de exclusão
     if (adminListaFotos) {
         adminListaFotos.innerHTML = "";
         fotos.forEach((f, index) => {
@@ -244,11 +301,11 @@ function fazerLogin() {
     let usuario = document.getElementById('inputUsuario').value.trim();
     let senha = document.getElementById('inputSenha').value.trim();
 
-    // Login solicitado: usuário alice, senha 561564
     if (usuario === "alice" && senha === "561564") {
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('painelConteudo').style.display = 'block';
         alert("Bem-vinda ao seu painel, Alice! 👑");
+        carregarPresentes();
         carregarCartoes();
         carregarVaralFotos();
     } else {
