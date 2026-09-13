@@ -173,3 +173,16 @@
     <script src="script.js"></script>
 </body>
 </html>
+<!-- Importa a biblioteca do Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // Suas credenciais do Supabase
+  const SUPABASE_URL = 'https://xiiieseiawrihuiboxgw.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_QYOUrSOzXSFwYaPYVcnoJA_x7-AdzvA';
+
+  // Conecta ao banco de dados
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  console.log("Conectado ao Supabase com sucesso!");
+</script>
