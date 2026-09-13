@@ -202,7 +202,7 @@ body {
     padding: 12px 15px;
     border-radius: 8px;
     color: var(--branco);
-    font-size: 0.95krem;
+    font-size: 0.95rem;
 }
 
 .form-estilizado input:focus, .form-estilizado textarea:focus {
@@ -290,7 +290,7 @@ body {
 }
 
 .grid-varal-animado:hover {
-    animation-play-state: paused; /* Para ao passar o mouse */
+    animation-play-state: paused;
 }
 
 @keyframes rolarVaral {
@@ -314,7 +314,6 @@ body {
     z-index: 10;
 }
 
-/* Pregador estilizado no topo da foto */
 .polaroid-item::before {
     content: '';
     position: absolute;
