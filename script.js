@@ -30,19 +30,21 @@ async function carregarPresentes() {
         // Exibição pública
         grid.innerHTML += `
             <div class="card-presente">
-                <img src="${p.img || 'https://via.placeholder.com/150'}" alt="${p.nome}">
-                <h3>${p.nome}</h3>
-                <p class="preco">R$ ${parseFloat(p.preco).toFixed(2)}</p>
-                <button class="btn-ouro" onclick="presentear('${p.nome}', ${p.preco})">Presentear 🎁</button>
+                <img src="${p.img || 'https://via.placeholder.com/150'}" alt="${escapeHtml(p.nome)}">
+                <div class="card-info">
+                    <h3>${escapeHtml(p.nome)}</h3>
+                    <p class="preco-presente">R$ ${parseFloat(p.preco).toFixed(2)}</p>
+                    <button class="btn-ouro" style="width:100%" onclick="presentear('${escapeHtml(p.nome)}', ${p.preco})">Presentear 🎁</button>
+                </div>
             </div>
         `;
 
         // Exibição no Painel da Alice
         if (adminLista) {
             adminLista.innerHTML += `
-                <div class="item-admin">
-                    <span>${p.nome} - R$ ${parseFloat(p.preco).toFixed(2)}</span>
-                    <button onclick="deletarPresente(${p.id})" class="btn-excluir">Deletar</button>
+                <div class="admin-item-linha">
+                    <span>${escapeHtml(p.nome)} - R$ ${parseFloat(p.preco).toFixed(2)}</span>
+                    <button onclick="deletarPresente(${p.id})" class="btn-excluir-admin">Deletar</button>
                 </div>
             `;
         }
@@ -66,7 +68,7 @@ async function adicionarPresenteAdmin() {
 
         if (error) throw error;
 
-        alert('Presente adicionado!');
+        alert('Presente adicionado com sucesso!');
         document.getElementById('novoNomePresente').value = '';
         document.getElementById('novoPrecoPresente').value = '';
         document.getElementById('novoFotoPresenteFile').value = '';
@@ -104,17 +106,17 @@ async function carregarCartoes() {
 
     cartoes.forEach(c => {
         lista.innerHTML += `
-            <div class="cartao-recado">
-                <h4>${escapeHtml(c.nome)}</h4>
-                <p>"${escapeHtml(c.mensagem)}"</p>
+            <div class="cartao-item">
+                <p class="mensagem-card">"${escapeHtml(c.mensagem)}"</p>
+                <span class="autor-card">— ${escapeHtml(c.nome)}</span>
             </div>
         `;
 
         if (adminLista) {
             adminLista.innerHTML += `
-                <div class="item-admin">
+                <div class="admin-item-linha">
                     <span><b>${escapeHtml(c.nome)}:</b> ${escapeHtml(c.mensagem)}</span>
-                    <button onclick="deletarCartao(${c.id})" class="btn-excluir">Excluir</button>
+                    <button onclick="deletarCartao(${c.id})" class="btn-excluir-admin">Excluir</button>
                 </div>
             `;
         }
@@ -143,7 +145,7 @@ async function deletarCartao(id) {
 }
 
 // ================================================
-// 3. VARAL DE MEMÓRIAS
+// 3. VARAL DE MEMÓRIAS (COM ESTILO POLAROID DO CSS)
 // ================================================
 async function carregarVaral() {
     const grid = document.getElementById('gridVaral');
@@ -157,19 +159,22 @@ async function carregarVaral() {
     grid.innerHTML = '';
     if (adminLista) adminLista.innerHTML = '';
 
-    fotos.forEach(f => {
+    fotos.forEach((f, index) => {
+        // Gera uma rotação aleatória leve para cada polaroid parecer natural
+        const randomRotate = (index % 2 === 0) ? '0.7' : '0.3';
+
         grid.innerHTML += `
-            <div class="item-varal" onclick="ampliarFoto('${f.foto}')">
-                <img src="${f.foto}" alt="${escapeHtml(f.nome)}">
-                <p>${escapeHtml(f.nome)}</p>
+            <div class="polaroid-item" style="--r: ${randomRotate};">
+                <img src="${f.foto}" alt="${escapeHtml(f.nome)}" class="polaroid-img" onclick="ampliarFoto('${f.foto}')">
+                <div class="polaroid-legenda">${escapeHtml(f.nome)}</div>
             </div>
         `;
 
         if (adminLista) {
             adminLista.innerHTML += `
-                <div class="item-admin">
+                <div class="admin-item-linha">
                     <span>${escapeHtml(f.nome)}</span>
-                    <button onclick="deletarFotoVaral(${f.id})" class="btn-excluir">Excluir</button>
+                    <button onclick="deletarFotoVaral(${f.id})" class="btn-excluir-admin">Excluir</button>
                 </div>
             `;
         }
@@ -183,20 +188,20 @@ async function enviarFotoVaral() {
     if (!inputFoto.files.length) return alert('Selecione uma foto primeiro!');
 
     try {
-        // Envia direto para o Supabase Storage (Bucket 'varal')
-        const fotoUrl = await fazerUploadStorage(inputFoto.files[0], 'varal_fotos');
+        // Envia para o bucket limpo 'fotos' criado no Supabase
+        const fotoUrl = await fazerUploadStorage(inputFoto.files[0], 'varal');
 
         const { error } = await _supabase.from('varal_fotos').insert([{ nome, foto: fotoUrl }]);
 
         if (error) throw error;
 
-        alert('Foto pendurada no varal! 📸');
+        alert('Foto pendurada no varal com sucesso! 📸');
         document.getElementById('nomeFotografo').value = '';
         inputFoto.value = '';
         carregarVaral();
     } catch (err) {
         console.error(err);
-        alert('Erro ao enviar foto! Verifique se as políticas do bucket estão liberadas no Supabase.');
+        alert('Erro ao enviar foto! Verifique o console (F12) e as políticas do Supabase Storage.');
     }
 }
 
@@ -309,7 +314,7 @@ async function fazerUploadStorage(file, pasta) {
     const caminho = `${pasta}/${nomeUnico}`;
 
     const { data, error } = await _supabase.storage
-        .from('VARAL DE FOTOS') // Nome exato do bucket no Supabase
+        .from('fotos') // Bucket padrão sem espaços
         .upload(caminho, file);
 
     if (error) {
@@ -318,7 +323,7 @@ async function fazerUploadStorage(file, pasta) {
     }
 
     const { data: publicData } = _supabase.storage
-        .from('VARAL DE FOTOS')
+        .from('fotos')
         .getPublicUrl(caminho);
 
     return publicData.publicUrl;
