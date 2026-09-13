@@ -183,7 +183,7 @@ async function enviarFotoVaral() {
     if (!inputFoto.files.length) return alert('Selecione uma foto primeiro!');
 
     try {
-        // Envia direto para o Supabase Storage (Bucket 'fotos')
+        // Envia direto para o Supabase Storage (Bucket 'VARAL DE FOTOS')
         const fotoUrl = await fazerUploadStorage(inputFoto.files[0], 'varal');
 
         const { error } = await _supabase.from('varal_fotos').insert([{ nome, foto: fotoUrl }]);
@@ -196,7 +196,7 @@ async function enviarFotoVaral() {
         carregarVaral();
     } catch (err) {
         console.error(err);
-        alert('Erro ao enviar foto! Verifique se o bucket "fotos" está configurado corretamente.');
+        alert('Erro ao enviar foto! Verifique se as políticas do bucket estão liberadas no Supabase.');
     }
 }
 
@@ -309,7 +309,7 @@ async function fazerUploadStorage(file, pasta) {
     const caminho = `${pasta}/${nomeUnico}`;
 
     const { data, error } = await _supabase.storage
-        .from('fotos') // Certifique-se de que o bucket no Supabase se chama 'fotos'
+        .from('VARAL DE FOTOS') // Nome exato do bucket no Supabase
         .upload(caminho, file);
 
     if (error) {
@@ -318,7 +318,7 @@ async function fazerUploadStorage(file, pasta) {
     }
 
     const { data: publicData } = _supabase.storage
-        .from('fotos')
+        .from('VARAL DE FOTOS')
         .getPublicUrl(caminho);
 
     return publicData.publicUrl;
